@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API\V01\Auth;
+namespace App\Http\Controllers\API\v1\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\UserRepository;
@@ -29,7 +29,7 @@ class AuthController extends Controller
 
         return response()->json([
             'message'=>'user created successfully'
-        ],201);
+        ],Response::HTTP_CREATED);
     }
 
     /**
@@ -47,7 +47,7 @@ class AuthController extends Controller
 
         //Check User Credentials For Login
         if(Auth()->attempt($request->only(['email','password']))){
-            return response()->json(Auth::user(),200);
+            return response()->json(Auth::user(),Response::HTTP_OK);
         }
 
         throw ValidationException::withMessages([
@@ -58,7 +58,7 @@ class AuthController extends Controller
 
     public function user()
     {
-        return response()->json(Auth::user(),200);
+        return response()->json(Auth::user(),Response::HTTP_OK);
     }
     public function logout()
     {
@@ -66,7 +66,7 @@ class AuthController extends Controller
 
         return response()->json([
             'message'=> 'logged out successfully'
-        ],200);
+        ],Response::HTTP_OK);
     }
 
 }
