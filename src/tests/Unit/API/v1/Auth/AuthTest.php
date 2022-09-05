@@ -2,6 +2,8 @@
 namespace Tests\Unit\API\v1\Auth;
 
 use App\Models\User;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
@@ -9,6 +11,27 @@ use Tests\TestCase;
 class AuthTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function registerRolesAndPermissions()
+    {
+        $roleInDatabase = Role::where('name', config('permission.default_roles')[0]);
+        if($roleInDatabase->count()<1){
+            foreach (config('permission.default_roles') as $role){
+                Role::create([
+                    'name'=>$role
+                ]);
+            }
+        }
+
+        $permissionInDatabase = Permission::where('name', config('permission.default_permissions')[0]);
+        if($permissionInDatabase->count()<1){
+            foreach (config('permission.default_permissions') as $permission){
+                Permission::create([
+                    'name'=>$permission
+                ]);
+            }
+        }
+    }
 
     /**
      * Test Register
@@ -23,6 +46,7 @@ class AuthTest extends TestCase
 
     public function test_new_user_can_register()
     {
+        $this->registerRolesAndPermissions();
         $response = $this->postJson(route('auth.register'),[
             'name'=>"Rahi",
             'email'=>"Rahi@gmail.com",

@@ -3,6 +3,7 @@ namespace Tests\Unit\API\v1\Channel;
 
 use App\Models\Channel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class ChannelTest extends TestCase

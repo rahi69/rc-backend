@@ -7,6 +7,7 @@ use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
@@ -25,7 +26,12 @@ class AuthController extends Controller
             'password'=>['required'],
         ]);
 
-        resolve(UserRepository::class)->create($request);
+        $user = resolve(UserRepository::class)->create($request);
+
+        $defaultSuperAdminEmail = config('permission.default_super_admin_email');
+
+        $user->email === $defaultSuperAdminEmail ? $user->assignRole('Super Admin') : $user->assignRole('User');
+
 
         return response()->json([
             'message'=>'user created successfully'
