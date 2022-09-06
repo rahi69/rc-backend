@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Unit\API\v1\Channel;
+namespace Tests\Feature\API\v1\Channel;
 
 use App\Models\Channel;
 use App\Models\User;
@@ -40,7 +40,7 @@ class ChannelTest extends TestCase
      */
     public function test_all_channels_list_should_be_accessible()
     {
-        $this->json('GET',route('channel.all'),['Accept'=>'application'])
+        $this->json('GET',route('channel.all'),['Accept' => 'application/json'])
             ->assertStatus(Response::HTTP_OK);
     }
 

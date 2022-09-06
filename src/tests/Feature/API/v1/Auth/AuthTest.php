@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Unit\API\v1\Auth;
+namespace Tests\Feature\API\v1\Auth;
 
 use App\Models\User;
 use Spatie\Permission\Models\Permission;

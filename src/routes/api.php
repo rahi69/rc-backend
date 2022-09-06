@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\v1\Thread\ThreadController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,4 +21,8 @@ Route::prefix('v1/')->group(function (){
 
     //Channel Routes
     include __DIR__ . '/v1/channels_routes.php';
+
+    //Thread Routes
+    include __DIR__ . '/v1/threads_routes.php';
+
 });
