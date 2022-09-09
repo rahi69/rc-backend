@@ -6,13 +6,13 @@ use App\Models\Answer;
 use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Sanctum\Sanctum;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class AnswerTest extends TestCase
 {
+    use RefreshDatabase;
     /** @test */
     public function can_get_all_answer_list()
     {
@@ -56,8 +56,12 @@ class AnswerTest extends TestCase
     public function can_update_own_answer_of_thread()
     {
         $this->withoutExceptionHandling();
-        Sanctum::actingAs(User::factory()->create());
-        $answer = Answer::factory()->create(['content'=>'Foo']);
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+        $answer = Answer::factory()->create([
+            'content'=>'Foo',
+            'user_id'=> $user->id
+        ]);
 
         $this->json('PUT', route('answers.update', [$answer]), ['content' => 'Bar'],['Accept' => 'application/json'])
 
@@ -74,7 +78,9 @@ class AnswerTest extends TestCase
     {
         $user = User::factory()->create();
         Sanctum::actingAs($user);
-        $answer = Answer::factory()->create();
+        $answer = Answer::factory()->create([
+            'user_id'=>$user->id
+            ]);
 
         $this->json('DELETE',route('answers.destroy', [$answer]),['Accept' => 'application/json'])
             ->assertStatus(Response::HTTP_OK)
