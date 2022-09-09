@@ -136,6 +136,8 @@ class ChannelTest extends TestCase
 
         $this->json('DELETE',route('channel.delete'),$idChannel,['Accept' => 'application/json'])
             ->assertStatus(Response::HTTP_OK);
+
+        $this->assertTrue(Channel::where('id',$channel->id)->count() === 0);
     }
 
 }
