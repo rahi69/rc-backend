@@ -15,10 +15,9 @@ class ThreadTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**@test*/
+    /** @test */
     public function all_threads_list_should_be_accessible()
     {
-//        $this->withoutExceptionHandling();
         $this->json('GET', route('threads.index'),['Accept' => 'application/json'])
             ->assertStatus(Response::HTTP_OK);
 
@@ -27,8 +26,6 @@ class ThreadTest extends TestCase
     /** @test */
     public function thread_should_be_accessible_by_slug()
     {
-//        $this->withoutExceptionHandling();
-
         $thread = Thread::factory()->create();
 
         $this->json('GET', route('threads.show', [$thread->slug]) ,['Accept' => 'application/json'])
@@ -38,6 +35,8 @@ class ThreadTest extends TestCase
     /** @test */
     public function create_thread_should_be_validated()
     {
+        Sanctum::actingAs(User::factory()->create());
+
         $this->json('POST',route('threads.store'),['Accept' => 'application/json'])
             ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
@@ -63,8 +62,6 @@ class ThreadTest extends TestCase
     /** @test */
     public function can_thread_update()
     {
-//        $this->withoutExceptionHandling();
-
         $user = User::factory()->create();
         Sanctum::actingAs($user);
         $thread = Thread::factory()->create([
